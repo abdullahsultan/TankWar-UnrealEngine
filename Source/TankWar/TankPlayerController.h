@@ -16,7 +16,11 @@ class TANKWAR_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	void BeginPlay() override;
 	ATank* GetControlledTank() const;
+	void AimTowardsCrossHair();
 	
 };

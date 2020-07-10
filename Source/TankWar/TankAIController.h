@@ -18,5 +18,6 @@ class TANKWAR_API ATankAIController : public AAIController
 public:
 	void BeginPlay() override;
 	ATank* GetControlledTank() const;
-		
+	ATank* GetPlayerControlTank() const;
+
 };
