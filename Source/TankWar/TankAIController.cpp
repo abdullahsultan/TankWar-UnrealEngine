@@ -7,17 +7,14 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATank* T = GetControlledTank();
-	if (T)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Posessed AI Pawn = %s"), *T->GetName());
-	}
+}
 
-	T = GetPlayerControlTank();
-	if (T)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("First Comntrolled Tank = %s"), *T->GetName());
-	}
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	GetControlledTank()->AimAt(GetPlayerControlTank()->GetActorLocation());
+
 }
 
 ATank* ATankAIController::GetControlledTank() const

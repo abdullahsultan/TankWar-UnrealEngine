@@ -32,12 +32,13 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrossHair()
 {
-	FVector HitLocation;
-	GetSightRayHitLocation(HitLocation);
-	UE_LOG(LogTemp, Warning, TEXT("Hit Loction : %s"), *HitLocation.ToString());
+	FVector HitLocation; FHitResult HitObject;
+	GetSightRayHitLocation(HitLocation, HitObject);
+	//UE_LOG(LogTemp, Warning, TEXT("Hit Loction : %s"), *HitLocation.ToString());
+	GetControlledTank()->AimAt(HitLocation,HitObject);
 }
 
-bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
+bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation, FHitResult& HitObject) const
 {
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX,ViewportSizeY);
@@ -45,7 +46,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	 FVector LookdDirection;
 	 if (GetLookDirection(ScreenLocation, LookdDirection))
 	 {
-		 GetLookVectorHitLocation(LookdDirection,HitLocation);
+		 GetLookVectorHitLocation(LookdDirection,HitLocation, HitObject);
 	 }
 
 	return false;
@@ -57,9 +58,8 @@ bool ATankPlayerController::GetLookDirection(FVector2D& ScreenLocation, FVector&
 	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldPosition, LookdDirection);
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVector& Hitlocation) const
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVector& Hitlocation, FHitResult& HitObject) const
 {
-	FHitResult HitObject;
 	FVector Start = PlayerCameraManager->GetCameraLocation();
 	FVector End = Start + (LookDirection * LineTraceRange);
 	if (GetWorld()->LineTraceSingleByChannel(
@@ -70,6 +70,16 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVect
 	))
 	{
 		Hitlocation = HitObject.Location;
+
+		if(HitObject.GetActor())
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("Hit Object = %s"), *HitObject.GetActor()->GetName());
+		}
+		else
+		{
+			//UE_LOG(LogTemp, Warning, TEXT("No Object"));
+		}
+
 		return true;
 	}
 	Hitlocation = FVector(0);

@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "TankAimingComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
@@ -25,5 +26,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	void AimAt(FVector HitLocation, FHitResult HitObject);
+	void AimAt(FVector HitLocation);
+
+	UTankAimingComponent* TankAimingComponent = nullptr;
 
 };
