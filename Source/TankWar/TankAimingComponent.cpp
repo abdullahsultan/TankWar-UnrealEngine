@@ -29,15 +29,22 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
+void UTankAimingComponent::SetBarrelRefrence(UStaticMeshComponent* BarrelToSet)
+{
+	Barrel = BarrelToSet;
+	UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Barrel->GetName());
+
+}
+
 void UTankAimingComponent::AimAt(FVector HitLocation, FHitResult HitObject)
 {
 	if (HitObject.GetActor())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s Aiming At : %s : At Location %s"), *GetOwner()->GetName(), *HitObject.GetActor()->GetName(), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("%s Aiming At : %s : At Location %s"), *GetOwner()->GetName(), *HitObject.GetActor()->GetName(), *HitLocation.ToString());
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
+		//UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
 	}
 }
 
@@ -45,11 +52,11 @@ void UTankAimingComponent::AimAt(FVector HitLocation)
 {
 	if (!HitLocation.IsZero())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s Aiming : At Location %s"), *GetOwner()->GetName(), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("%s Aiming : At Location %s"), *GetOwner()->GetName(), *HitLocation.ToString());
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
+		//UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
 	}
 }
 

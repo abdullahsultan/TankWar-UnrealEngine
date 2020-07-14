@@ -32,4 +32,8 @@ public:
 
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetBarrelRefrence(UStaticMeshComponent* BarrelToSet);
+
+
 };
