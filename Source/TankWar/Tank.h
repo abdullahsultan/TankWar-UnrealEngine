@@ -27,13 +27,16 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	void AimAt(FVector HitLocation, FHitResult HitObject);
+	//void AimAt(FVector HitLocation, FHitResult HitObject);
 	void AimAt(FVector HitLocation);
 
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetBarrelRefrence(UStaticMeshComponent* BarrelToSet);
+
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LaunchSpeed = 100000;
 
 
 };

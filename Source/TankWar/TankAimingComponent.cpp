@@ -1,4 +1,5 @@
 #include "TankAimingComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
@@ -29,34 +30,63 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
-void UTankAimingComponent::SetBarrelRefrence(UStaticMeshComponent* BarrelToSet)
-{
-	Barrel = BarrelToSet;
-	UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Barrel->GetName());
 
-}
-
-void UTankAimingComponent::AimAt(FVector HitLocation, FHitResult HitObject)
+/*void UTankAimingComponent::AimAt(FVector HitLocation, FHitResult HitObject)
 {
 	if (HitObject.GetActor())
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("%s Aiming At : %s : At Location %s"), *GetOwner()->GetName(), *HitObject.GetActor()->GetName(), *HitLocation.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("%s Aiming At : %s : At Location %s"), *GetOwner()->GetName(), *HitObject.GetActor()->GetName(), *HitLocation.ToString());
 	}
 	else
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
+		UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
 	}
-}
+}*/
 
-void UTankAimingComponent::AimAt(FVector HitLocation)
+void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
-	if (!HitLocation.IsZero())
+	//UE_LOG(LogTemp, Error, TEXT("DDDDDDDDDDDDD %s"), *HitLocation.ToString());
+	FVector AimDirection;
+	if (!Barrel) { return; }
+
+	FVector OutLaunchVelocity(0); //Suggested Projectile Velicity by Function OUT prameter
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+
+	if (UGameplayStatics::SuggestProjectileVelocity(
+		this,
+		OutLaunchVelocity,
+		StartLocation,
+		HitLocation,
+		LaunchSpeed,
+		false,
+		0,
+		0,
+		ESuggestProjVelocityTraceOption::DoNotTrace
+	))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("%s Aiming : At Location %s"), *GetOwner()->GetName(), *HitLocation.ToString());
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
+		UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("True"));
 	}
 	else
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("NO Object Hitting"));
-	}
+		UE_LOG(LogTemp, Error, TEXT("Function not suggesting"));
+	}	
+	MoveBarrelTowards(AimDirection);
 }
 
+void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
+{
+	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimDirection.Rotation();
+	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
+	//UE_LOG(LogTemp, Warning, TEXT("Aim As %s"), *DeltaRotator.ToString());
+
+}
+
+
+void UTankAimingComponent::SetBarrelRefrence(UStaticMeshComponent* BarrelToSet)
+{
+	Barrel = BarrelToSet;
+	//UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Barrel->GetName());
+}

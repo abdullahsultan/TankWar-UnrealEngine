@@ -34,15 +34,15 @@ void ATankPlayerController::AimTowardsCrossHair()
 {
 	FVector HitLocation; FHitResult HitObject;
 	GetSightRayHitLocation(HitLocation, HitObject);
-	//UE_LOG(LogTemp, Warning, TEXT("Hit Loction : %s"), *HitLocation.ToString());
-	GetControlledTank()->AimAt(HitLocation,HitObject);
+	if (HitObject.GetActor())
+		GetControlledTank()->AimAt(HitLocation);   //Sending hit information to Tank.cpp
 }
 
 bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation, FHitResult& HitObject) const
 {
 	int32 ViewportSizeX, ViewportSizeY;
-	GetViewportSize(ViewportSizeX,ViewportSizeY);
-	FVector2D ScreenLocation = FVector2D(ViewportSizeX* CrosshairXLocation, ViewportSizeY* CrosshairYLocation);
+	GetViewportSize(ViewportSizeX,ViewportSizeY); //Get ViewPort(BP widget) size (In our case screen size)
+	FVector2D ScreenLocation = FVector2D(ViewportSizeX* CrosshairXLocation, ViewportSizeY* CrosshairYLocation); //Getting location of AimPoint from screen size(actullay BP widget)
 	 FVector LookdDirection;
 	 if (GetLookDirection(ScreenLocation, LookdDirection))
 	 {
@@ -55,10 +55,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation, FHitRes
 bool ATankPlayerController::GetLookDirection(FVector2D& ScreenLocation, FVector& LookdDirection) const
 {
 	FVector CameraWorldPosition;
-	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldPosition, LookdDirection);
+	return DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, CameraWorldPosition, LookdDirection); // Convert 2d position to 3d world space
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVector& Hitlocation, FHitResult& HitObject) const
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVector& Hitlocation, FHitResult& HitObject) const //Get Things we HIT
 {
 	FVector Start = PlayerCameraManager->GetCameraLocation();
 	FVector End = Start + (LookDirection * LineTraceRange);
