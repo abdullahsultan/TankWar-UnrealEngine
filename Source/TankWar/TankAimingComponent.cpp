@@ -1,4 +1,5 @@
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -47,12 +48,14 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	//UE_LOG(LogTemp, Error, TEXT("DDDDDDDDDDDDD %s"), *HitLocation.ToString());
 	FVector AimDirection;
+
+
 	if (!Barrel) { return; }
 
 	FVector OutLaunchVelocity(0); //Suggested Projectile Velicity by Function OUT prameter
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
-	if (UGameplayStatics::SuggestProjectileVelocity(
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,
 		OutLaunchVelocity,
 		StartLocation,
@@ -62,17 +65,20 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		0,
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
-	))
-	{
-		AimDirection = OutLaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
-		//UE_LOG(LogTemp, Warning, TEXT("True"));
-	}
+	);
+
+	if(bHaveAimSolution)
+		{
+			AimDirection = OutLaunchVelocity.GetSafeNormal();
+			UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
+			MoveBarrelTowards(AimDirection);
+			//UE_LOG(LogTemp, Warning, TEXT("True"));
+		}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Function not suggesting"));
 	}	
-	MoveBarrelTowards(AimDirection);
+	
 }
 
 void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
@@ -81,11 +87,12 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
 	//UE_LOG(LogTemp, Warning, TEXT("Aim As %s"), *DeltaRotator.ToString());
+	//Barrel->Elevate(5);
 
 }
 
 
-void UTankAimingComponent::SetBarrelRefrence(UStaticMeshComponent* BarrelToSet)
+void UTankAimingComponent::SetBarrelRefrence(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 	//UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Barrel->GetName());
