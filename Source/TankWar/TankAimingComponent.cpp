@@ -1,5 +1,6 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
+#include "TankTurret.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -70,7 +71,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if(bHaveAimSolution)
 		{
 			AimDirection = OutLaunchVelocity.GetSafeNormal();
-			UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
+			//UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
 			MoveBarrelTowards(AimDirection);
 			//UE_LOG(LogTemp, Warning, TEXT("True"));
 		}
@@ -86,7 +87,6 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT("Aim As %s"), *DeltaRotator.ToString());
 	Barrel->Elevate(DeltaRotator.Pitch);
 
 }
@@ -96,4 +96,10 @@ void UTankAimingComponent::SetBarrelRefrence(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
 	//UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Barrel->GetName());
+}
+
+void UTankAimingComponent::SetTurretRefrence(UTankTurret* TurretToSet)
+{
+	Turret = TurretToSet;
+	UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Turret->GetName());
 }

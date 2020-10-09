@@ -7,7 +7,8 @@
 #include "GameFramework/Pawn.h"
 #include "Tank.generated.h"
 
-class TankBarrel;
+class UTankBarrel;
+class UTankTurret;
 
 UCLASS()
 class TANKWAR_API ATank : public APawn
@@ -36,6 +37,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetBarrelRefrence(UTankBarrel* BarrelToSet);
+	UFUNCTION(BlueprintCallable, Category = Setup)
+		void SetTurretRefrence(UTankTurret* TurretToSet);
 
 	UPROPERTY(EditAnywhere, Category = Firing)
 		float LaunchSpeed = 100000;

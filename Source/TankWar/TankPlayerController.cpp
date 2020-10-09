@@ -9,10 +9,10 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	ATank* T = GetControlledTank();
-	if(T)
+	/*if(T)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Posessed Pawn = %s"), *T->GetName());
-	}
+	}*/
 
 }
 
@@ -72,14 +72,14 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVect
 	{
 		Hitlocation = HitObject.Location;
 
-		if(HitObject.GetActor())
+		/*if(HitObject.GetActor())
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("Hit Object = %s"), *HitObject.GetActor()->GetName());
 		}
 		else
 		{
 			//UE_LOG(LogTemp, Warning, TEXT("No Object"));
-		}
+		}*/
 
 		return true;
 	}
