@@ -9,12 +9,12 @@
 class UTankBarrel;
 class UTankTurret;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class TANKWAR_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
@@ -22,7 +22,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	UTankBarrel* Barrel;
 	UTankTurret* Turret;
@@ -34,5 +34,6 @@ public:
 	//void AimAt(FVector HitLocation, FHitResult HitObject);
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 	void MoveBarrelTowards(FVector AimDirection);
-		
+	void MoveTurretTowards(FVector AimDirection);
+
 };

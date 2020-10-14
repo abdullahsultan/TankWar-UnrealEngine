@@ -73,6 +73,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 			AimDirection = OutLaunchVelocity.GetSafeNormal();
 			//UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
 			MoveBarrelTowards(AimDirection);
+			MoveTurretTowards(AimDirection);
 			//UE_LOG(LogTemp, Warning, TEXT("True"));
 		}
 	else
@@ -91,15 +92,21 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 }
 
+void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
+{
+	FRotator TurretRotator = Turret->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimDirection.Rotation();
+	FRotator DeltaRotator = AimAsRotator - TurretRotator;
+	Turret->Rotate(DeltaRotator.Yaw);
+}
+
 
 void UTankAimingComponent::SetBarrelRefrence(UTankBarrel* BarrelToSet)
 {
 	Barrel = BarrelToSet;
-	//UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Barrel->GetName());
 }
 
 void UTankAimingComponent::SetTurretRefrence(UTankTurret* TurretToSet)
 {
 	Turret = TurretToSet;
-	UE_LOG(LogTemp, Warning, TEXT("Tank %s ::	Static Mesh Name :: %s"), *GetOwner()->GetName(),*Turret->GetName());
 }

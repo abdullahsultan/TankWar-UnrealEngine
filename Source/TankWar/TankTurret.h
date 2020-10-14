@@ -13,5 +13,9 @@ UCLASS(meta = (BlueprintSpawnableComponent))
 class TANKWAR_API UTankTurret : public UStaticMeshComponent
 {
 	GENERATED_BODY()
+
+public:
+	void Rotate(float RelativeSpeed);
+	float MaxDegreePerSecond = 50;
 	
 };
