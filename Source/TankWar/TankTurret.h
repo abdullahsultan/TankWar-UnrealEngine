@@ -16,6 +16,6 @@ class TANKWAR_API UTankTurret : public UStaticMeshComponent
 
 public:
 	void Rotate(float RelativeSpeed);
-	float MaxDegreePerSecond = 50;
+	float MaxDegreePerSecond = 35.0f;
 	
 };

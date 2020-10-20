@@ -34,6 +34,5 @@ public:
 	//void AimAt(FVector HitLocation, FHitResult HitObject);
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 	void MoveBarrelTowards(FVector AimDirection);
-	void MoveTurretTowards(FVector AimDirection);
 
 };

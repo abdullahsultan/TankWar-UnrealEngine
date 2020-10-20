@@ -53,7 +53,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 
 	if (!Barrel) { return; }
 
-	FVector OutLaunchVelocity(0); //Suggested Projectile Velicity by Function OUT prameter
+	FVector OutLaunchVelocity(0.0f); //Suggested Projectile Velicity by Function OUT prameter
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
@@ -73,7 +73,6 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 			AimDirection = OutLaunchVelocity.GetSafeNormal();
 			//UE_LOG(LogTemp, Warning, TEXT("Tank %s :: Big Fun %s"), *GetOwner()->GetName(),*AimDirection.ToString());
 			MoveBarrelTowards(AimDirection);
-			MoveTurretTowards(AimDirection);
 			//UE_LOG(LogTemp, Warning, TEXT("True"));
 		}
 	else
@@ -89,16 +88,10 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
 	Barrel->Elevate(DeltaRotator.Pitch);
-
-}
-
-void UTankAimingComponent::MoveTurretTowards(FVector AimDirection)
-{
-	FRotator TurretRotator = Turret->GetForwardVector().Rotation();
-	FRotator AimAsRotator = AimDirection.Rotation();
-	FRotator DeltaRotator = AimAsRotator - TurretRotator;
 	Turret->Rotate(DeltaRotator.Yaw);
+
 }
+
 
 
 void UTankAimingComponent::SetBarrelRefrence(UTankBarrel* BarrelToSet)

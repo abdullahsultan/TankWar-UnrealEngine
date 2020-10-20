@@ -16,13 +16,13 @@ class TANKWAR_API UTankBarrel : public UStaticMeshComponent
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-	float MaxDegreePerSecond = 5;
+	float MaxDegreePerSecond = 10.0f;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
-		float MinElevationDegrees = 0;
+		float MinElevationDegrees = 0.0f;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
-		float MaxElevationDegrees = 30;
+		float MaxElevationDegrees = 30.0f;
 
 public:
 	void Elevate(float RelativeSpeed);
