@@ -34,7 +34,8 @@ public:
 	void AimAt(FVector HitLocation);
 
 	UTankAimingComponent* TankAimingComponent = nullptr;
-
+	UFUNCTION(BlueprintCallable)
+		void Fire();
 	UFUNCTION(BlueprintCallable, Category = Setup)
 		void SetBarrelRefrence(UTankBarrel* BarrelToSet);
 	UFUNCTION(BlueprintCallable, Category = Setup)

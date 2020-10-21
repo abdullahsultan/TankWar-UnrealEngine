@@ -6,7 +6,6 @@
 void UTankBarrel::Elevate(float RelativeSpeed)
 {
 	RelativeSpeed = FMath::Clamp<float>(RelativeSpeed, -1, 1);
-	UE_LOG(LogTemp, Warning, TEXT("Relative Speed barrel %f"), RelativeSpeed);
 	float ElevationChange = RelativeSpeed * MaxDegreePerSecond * GetWorld()->DeltaTimeSeconds;
 
 	float RawNewElevation = GetRelativeRotation().Pitch + ElevationChange;
