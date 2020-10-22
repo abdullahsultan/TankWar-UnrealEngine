@@ -34,6 +34,10 @@ public:
 	//void AimAt(FVector HitLocation, FHitResult HitObject);
 	void AimAt(FVector HitLocation);
 
+	float ReloadTimeInSeconds = 3.0f;
+	double LastFireTime = 0;
+
+
 	UTankAimingComponent* TankAimingComponent = nullptr;
 	UFUNCTION(BlueprintCallable)
 		void Fire();
