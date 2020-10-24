@@ -74,11 +74,11 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVect
 
 		/*if(HitObject.GetActor())
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("Hit Object = %s"), *HitObject.GetActor()->GetName());
+			UE_LOG(LogTemp, Warning, TEXT("Hit Object = %s"), *HitObject.GetActor()->GetName());
 		}
 		else
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("No Object"));
+			UE_LOG(LogTemp, Warning, TEXT("No Object"));
 		}*/
 
 		return true;
